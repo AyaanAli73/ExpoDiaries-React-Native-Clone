@@ -374,4 +374,4 @@ To maintain complete transparency regarding current implementation status:
 
 ## 18. Disclaimer
 
-> **Notice**: This project is an independent open-source mobile application clone inspired by modern trade show companion apps and ExpoDiaries workflows. It is developed solely for educational, architectural demonstration, and engineering portfolio purposes. It is **not** the official ExpoDiaries application, nor is it affiliated with, endorsed by, or sponsored by any proprietary entity associated with ExpoDiaries.
+> **Notice:** This project is a UI and functionality demonstration created for learning, development practice, and portfolio purposes. It is an independent project inspired by trade-show companion applications and ExpoDiaries workflows. It is **not the official ExpoDiaries application** and is not affiliated with, endorsed by, or sponsored by ExpoDiaries or any related organization.
