@@ -1,13 +1,12 @@
 # ExpoDiaries — React Native Mobile Clone
 
-> A high-performance, mobile-first trade show companion and on-floor lead management application built with **Expo SDK 57**, **React Native 0.86**, **Expo Router**, **NativeWind**, and **TypeScript**.
+> A mobile-first trade show companion and on-floor lead qualification application built with **Expo SDK 57**, **React Native 0.86**, **Expo Router**, **NativeWind**, and **TypeScript**.
 
 [![Expo SDK](https://img.shields.io/badge/Expo-SDK%2057-000020?style=for-the-badge&logo=expo&logoColor=white)](https://expo.dev)
 [![React Native](https://img.shields.io/badge/React_Native-0.86-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactnative.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org)
 [![Tailwind CSS](https://img.shields.io/badge/NativeWind-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://nativewind.dev)
-[![Build Status](https://img.shields.io/badge/TypeScript-Passing-22c55e?style=for-the-badge)]()
-[![Lint Status](https://img.shields.io/badge/Lint-Clean-22c55e?style=for-the-badge)]()
+[![Status](https://img.shields.io/badge/Status-In_Refinement-f59e0b?style=for-the-badge)]()
 
 ---
 
@@ -15,57 +14,105 @@
 **ExpoDiaries — React Native Mobile Clone**
 
 ## 2. Short Project Description
-ExpoDiaries is an enterprise-grade mobile application designed for trade show attendees, exhibitors, and on-floor sales representatives. It streamlines personal event planning, interactive expo hall floor navigation, instant business-card optical character recognition (OCR), multi-modal lead capture (voice memos and booth collateral photos), qualification workflows, and real-time booth analytics.
+ExpoDiaries is an enterprise mobile application concept designed for trade show attendees, exhibitors, and on-floor sales representatives. It streamlines personal event planning, interactive expo hall floor navigation, business-card scanning, multi-modal lead capture (voice memos and booth collateral photos), fast qualification workflows, and booth analytics.
 
 ## 3. Project Goal
 Trade-show exhibition floors are high-pressure, noisy, and fast-paced environments where sales representatives and executives have mere seconds to engage, evaluate, and log prospects. The primary goal of this application is to deliver an ultra-responsive, mobile-optimized experience where:
 - Sales professionals can scan a business card, review extracted data, qualify intent, attach voice memos, and log a lead in seconds.
 - Attendees can browse hall layouts, pin booths, search exhibitors, and build conflict-free schedules with real-time overlap warnings.
-- The UI maintains 60+ FPS fluid animations, instant feedback, and accessible interactions on iOS and Android.
+- The UI maintains fluid animations, instant feedback, and accessible interactions on iOS and Android.
 
 ---
 
 ## 4. Current Status
 
-```
-Overall Progress: [████████████████░░░░░░░░] 67% (4 / 6 Phases Completed)
-```
+> **Project Status**:
+> “Core development through Phase 3 is implemented. The application is currently in the UI/UX refinement stage, with visual polishing, responsive improvements, performance optimization, QA, Phase 4 features and production-readiness work still remaining.”
 
-- **Phases Completed**: **Phase 0**, **Phase 1**, **Phase 2**, and **Phase 3**
-- **Upcoming Phases**: **Phase 4** (Team & Analytics) and **Phase 5** (Production Readiness & Native Builds)
-- **Current Data Layer**: Fully decoupled Repository & Service architecture with realistic mock data simulation, ready for REST/GraphQL/Supabase backend connection.
+### Current Development State
+- **Core Functionality Implemented**: Phases 0 through 3 core feature sets are implemented and functional.
+- **Visual Finalization**: The application is **not visually finalized yet**. Existing UI screens still require further polish, aesthetic tuning, and visual hierarchy adjustments.
+- **UI/UX Consistency**: Spacing, typography scales, color harmony, card contours, and elevation styling are actively being refined.
+- **Responsive Behavior**: Responsive layouts across varied device aspect ratios, foldables, and tablets are undergoing fine-tuning.
+- **Animations**: Transition curves, sheet drawer interactions, and micro-interactions are being polished.
+- **States**: Loading skeletons, empty state illustrations, and error recovery banners are being unified.
+- **Future Scope**: **Phase 4** (Team, Analytics & CRM) and **Phase 5** (Production Integration & Native QA) have not started or completed yet.
+- **Production Status**: The application is **not yet production-ready** and is **not 100% complete**.
 
 ---
 
-## 5. Phase Progress Table
+## 5. Phase Progress Table & Roadmap
+
+### Summary Roadmap
+
+```text
+Phase 0 — Foundation & Architecture            ✅
+Phase 1 — Auth + App Shell + Dashboard         ✅
+Phase 2 — Events + Exhibitors + Floor Experience ✅
+Phase 3 — Leads + Capture + OCR + Notes         ✅ Core Implementation
+Phase 4 — Team + Analytics + CRM + Profile      ⏳
+Phase 5 — Production Integration + Final QA     ⏳
+```
+
+### Phase Progress Breakdown
 
 | Phase | Module Name | Scope & Focus | Status |
 | :--- | :--- | :--- | :---: |
 | **Phase 0** | **Foundation & Architecture** | Project setup, design system tokens, atomic UI library, mock data layer, type contracts | ✅ **Complete** |
 | **Phase 1** | **Auth + App Shell + Dashboard** | Auth flow, onboarding, tab navigation, executive KPI summary, active event tracking | ✅ **Complete** |
 | **Phase 2** | **Events + Exhibitors + Floor Experience** | Event discovery, exhibitor profiles, interactive floor visualizer, personal itinerary timeline | ✅ **Complete** |
-| **Phase 3** | **Leads + Capture + OCR + Notes** | Camera scanner, simulated OCR, editable lead review, qualification, audio notes, attachments | ✅ **Complete** |
+| **Phase 3** | **Leads + Capture + OCR + Notes** | Camera scanner, simulated OCR, editable lead review, qualification, audio notes, attachments | ✅ **Core Implementation** *(UI Refinement In Progress)* |
 | **Phase 4** | **Team + Analytics + CRM + Profile** | Team roles, lead routing, advanced event ROI analytics, CRM export, vCard digital badge | ⏳ *Remaining* |
-| **Phase 5** | **Production Readiness & QA** | Production API sync, SQLite local cache, accessibility compliance, EAS cloud builds | ⏳ *Remaining* |
+| **Phase 5** | **Production Integration + Final QA** | Production API sync, SQLite local cache, accessibility compliance, EAS cloud builds | ⏳ *Remaining* |
 
 ---
 
-## 6. Completed Features
+## 6. Current Refinement
+
+While core functionality across **Phases 0 through 3** has been implemented and is functionally operational, the application is **not visually finalized** and is not considered production-ready. The already implemented Phase 0–3 screens are currently undergoing active refinement before the project is considered complete:
+
+- **UI Polish**:
+  - Refining spacing, typography hierarchies, card borders, and shadow tokens.
+  - Ensuring consistent visual styling across form inputs, headers, badges, and action bars.
+  - Elevating visual polish of the Leads Directory, Lead Review modal, and Itinerary screens.
+- **Responsive Layout Refinement**:
+  - Fine-tuning responsive behavior across different phone screen sizes, notches, and safe-area insets.
+  - Verifying tablet layouts and split-view ergonomics.
+- **Animation Refinement**:
+  - Polishing transition curves, spring physics, sheet drag gestures, and scanning frame animations.
+  - Ensuring micro-interactions feel tactile, responsive, and interruptible.
+- **Component Consistency**:
+  - Standardizing button sizing (`sm`, `md`, `lg`), avatar fallbacks, input accessory icons, and hit targets.
+  - Ensuring consistent styling across light and dark modes.
+- **Accessibility (A11y)**:
+  - Completing accessibility labels (`aria-label`, `accessibilityRole`), contrast checks, and focus rings.
+  - Supporting system font scaling without breaking layout boundaries.
+- **Performance Optimization**:
+  - Profiling list rendering in large directories (Leads, Exhibitors) and floor map nodes.
+  - Eliminating unnecessary re-renders in forms and camera views.
+- **Error, Loading & Empty States**:
+  - Upgrading placeholder skeletons, retry buttons, and contextual empty illustrations.
+- **Final QA**:
+  - Comprehensive cross-platform QA on physical iOS and Android devices prior to release.
+
+---
+
+## 7. Completed Features (Core Implementation)
 
 ### ✅ Phase 0 — Foundation & Architecture
-- **Enterprise Design System**: Tailored light & dark palette, radius scales, spacing systems, semantic color states (`src/theme/`).
-- **Accessible UI Component Library**: 25+ accessible components including `Button`, `Input`, `Badge`, `Card`, `Avatar`, `Chip`, `BottomSheet`, `Modal`, `Toast`, `Skeleton`, and `Divider` (`src/components/ui/`).
-- **Typed Service & Repository Pattern**: Complete separation of concerns via TypeScript interfaces (`ILeadsRepository`, `IEventsRepository`, `IAnalyticsRepository`, `ITeamRepository`).
+- **Design System Tokens**: Tailored light & dark palette, radius scales, spacing systems, semantic color states (`src/theme/`).
+- **Accessible UI Component Library**: Reusable UI components including `Button`, `Input`, `Badge`, `Card`, `Avatar`, `Chip`, `BottomSheet`, `Modal`, `Toast`, `Skeleton`, and `Divider` (`src/components/ui/`).
+- **Typed Service & Repository Pattern**: Separation of concerns via TypeScript interfaces (`ILeadsRepository`, `IEventsRepository`, `IAnalyticsRepository`, `ITeamRepository`).
 - **Data Validation**: Strict runtime schema validation powered by **Zod** (`src/types/`).
 - **State Management**: Scalable global stores powered by **Zustand** (`useAppStore`, `useAuthStore`, `useCaptureStore`, `useFilterStore`).
 - **Server State & Caching**: Custom query and mutation hooks using **TanStack React Query**.
 
 ### ✅ Phase 1 — Authentication, App Shell & Dashboard
 - **Authentication Experience**: Mock sign-in, token storage simulation, session persistence, and logout flow (`src/services/auth.service.ts`).
-- **Onboarding Carousel**: Interactive multi-step onboarding guide (`app/onboarding/index.tsx`).
-- **App Shell & Responsive Navigation**: Fluid bottom tabs with dynamic badge indicators, platform-specific adaptations (`app/(tabs)/_layout.tsx`).
+- **Onboarding Carousel**: Multi-step onboarding guide (`app/onboarding/index.tsx`).
+- **App Shell & Navigation**: Fluid bottom tabs with dynamic badge indicators and platform-specific adaptations (`app/(tabs)/_layout.tsx`).
 - **Executive Dashboard**:
-  - Live metric KPI counters: Total Leads, Qualified Leads, Goal Progress, Conversion Rates (`src/repositories/analytics.repository.ts`).
+  - Metric KPI counters: Total Leads, Qualified Leads, Goal Progress, Conversion Rates (`src/repositories/analytics.repository.ts`).
   - Active and upcoming event spotlight with countdowns and venue summaries.
   - Quick action launcher for instant scanning, manual entry, and itinerary lookup.
   - Pull-to-refresh and empty-state error boundaries.
@@ -77,7 +124,7 @@ Overall Progress: [████████████████░░░░�
   - Hall switcher and structured SVG-based trade-show grid layout (`src/components/events/expo-floor-visualizer.tsx`).
   - Interactive booth selection with instant bottom sheet modal showing booth number, exhibitor profile, captured leads count, and direct actions.
 - **Personal Event Itinerary System**:
-  - Interactive day-by-day itinerary timeline with time-slot management (`src/components/events/personal-itinerary-timeline.tsx`).
+  - Day-by-day itinerary timeline with time-slot management (`src/components/events/personal-itinerary-timeline.tsx`).
   - Automatic **conflict detection** highlighting overlapping meetings and speaker sessions.
   - Add, edit, delete, and reorder itinerary items with local repository persistence.
 
@@ -87,7 +134,7 @@ Overall Progress: [████████████████░░░░�
   - Lead cards with composite scoring badges, attendee avatars, and status badges (`src/components/leads/lead-card.tsx`).
   - Lead profile screen with audit activity logs and note streams (`app/leads/[id].tsx`).
 - **Business Card Capture Experience**:
-  - Production-grade camera view with frame reticle, flash toggle, and capture controls using **Expo Camera** (`src/components/leads/business-card-camera.tsx`).
+  - Camera view with frame reticle, flash toggle, and capture controls using **Expo Camera** (`src/components/leads/business-card-camera.tsx`).
   - Processing overlay with scan animations.
 - **OCR Engine (Simulated Interface)**:
   - Mocked cloud vision OCR interface returning structured `LeadDraft` models (`src/services/ocr/ocr.types.ts`).
@@ -98,7 +145,7 @@ Overall Progress: [████████████████░░░░�
   - **`EVENT`**: Event name, hall quick-chips, booth number, assigned sales rep carousel, and follow-up due date presets.
   - **`NOTES`**: Rapid note tag shortcuts (`+ Active RFP`, `+ Decision Maker`, etc.) and multiline takeaways.
   - **`ATTACHMENTS`**: Front card scan preview with zoom modal, voice notes, and photo attachments.
-  - **`SAVE LEAD`**: Instant repository commit, activity audit creation, and dashboard KPI synchronization.
+  - **`SAVE LEAD`**: Repository commit, activity audit creation, and dashboard KPI synchronization.
   - **Lead Confirmation State**: Post-save verification summary card with direct routes to view lead or scan next.
 - **Audio & Media Attachments**:
   - Voice memo recording and playback with duration tracking and waveform visualization powered by **Expo Audio** (`src/components/leads/voice-note-player.tsx`, `src/hooks/use-audio-recorder.ts`).
@@ -106,9 +153,9 @@ Overall Progress: [████████████████░░░░�
 
 ---
 
-## 7. Remaining Roadmap
+## 8. Remaining Roadmap
 
-### ⏳ Phase 4 — Team, Analytics, CRM & Profile
+### ⏳ Phase 4 — Team, Analytics, CRM & Profile (Not Started)
 - [ ] **Team Management & Routing**: Assign leads to specific booth team members with workload balancing (`src/components/leads/lead-assignment-modal.tsx`).
 - [ ] **Advanced Event Analytics**:
   - Comprehensive event ROI calculators, cost-per-lead (CPL) benchmarks, and booth visitor footfall charts (`app/(tabs)/analytics.tsx`).
@@ -118,7 +165,7 @@ Overall Progress: [████████████████░░░░�
 - [ ] **Digital Business Card (vCard)**: Personal exhibitor profile with a generated QR code for two-way badge sharing (`app/(tabs)/profile.tsx`).
 - [ ] **Settings & Data Privacy**: Configurable notifications, GDPR contact consent toggles, and data purge controls.
 
-### ⏳ Phase 5 — Production Readiness & QA
+### ⏳ Phase 5 — Production Integration + Final QA (Not Started)
 - [ ] **Production API Integration**: Replace mock simulation clients with production REST / GraphQL backend.
 - [ ] **Offline Sync & SQLite Storage**: Background sync engine with conflict resolution for unreliable venue Wi-Fi networks.
 - [ ] **Security & Credentials**: Secure hardware key storage via `expo-secure-store` for JWT access and refresh tokens.
@@ -127,7 +174,7 @@ Overall Progress: [████████████████░░░░�
 
 ---
 
-## 8. Tech Stack
+## 9. Tech Stack
 
 | Technology | Purpose | Version |
 | :--- | :--- | :--- |
@@ -140,7 +187,7 @@ Overall Progress: [████████████████░░░░�
 | **Zustand** | Client State Management | `^5.0.15` |
 | **TanStack React Query** | Asynchronous Server State & Cache Management | `^5.104.1` |
 | **Zod** | Schema Definition & Runtime Validation | `^4.6.5` |
-| **React Native Reanimated** | Smooth 60 FPS Micro-Animations | `4.5.1` |
+| **React Native Reanimated** | Micro-Animations & Gestures | `4.5.1` |
 | **Expo Camera** | Native Camera Hardware & Card Scanning Reticle | `~57.0.6` |
 | **Expo Audio** | Native Audio Recording & Playback | `~57.0.5` |
 | **Expo Image Picker** | Collateral & Photo Attachment Selection | `~57.0.20` |
@@ -148,7 +195,7 @@ Overall Progress: [████████████████░░░░�
 
 ---
 
-## 9. Architecture Overview
+## 10. Architecture Overview
 
 ```
 ┌────────────────────────────────────────────────────────┐
@@ -189,7 +236,7 @@ The application adheres to clean architecture principles:
 
 ---
 
-## 10. Folder Structure
+## 11. Folder Structure
 
 ```text
 expo-diaries/
@@ -235,7 +282,7 @@ expo-diaries/
 
 ---
 
-## 11. Installation
+## 12. Installation
 
 ### Prerequisites
 - **Node.js**: `v18.x` or later (LTS recommended)
@@ -262,7 +309,7 @@ expo-diaries/
 
 ---
 
-## 12. Running Locally
+## 13. Running Locally
 
 Start the Expo development server:
 
@@ -278,7 +325,7 @@ npx expo start
 
 ---
 
-## 13. Development Workflow
+## 14. Development Workflow
 
 Maintain code quality and type safety before committing any changes:
 
@@ -295,41 +342,24 @@ npx expo-doctor
 
 ---
 
-## 14. Current Limitations
+## 15. Current Limitations
 
 To maintain complete transparency regarding current implementation status:
 1. **OCR Engine**: Business card OCR currently uses a deterministic, realistic simulation engine (`src/services/ocr/ocr.types.ts`). While it mimics real recognition confidence, field parsing, and network delays, it is not connected to a live cloud vision API.
 2. **Persistence**: Leads, itinerary items, and attachments are persisted in memory and local repository state with simulated latency. They reset upon full app bundle reload.
 3. **Analytics**: Dashboard KPI counters, progress bars, and conversion rates calculate metrics based on in-memory mock repository transactions.
 4. **Export**: The lead export feature produces RFC-4180 compliant CSV text client-side, rather than streaming to a remote cloud file storage bucket.
+5. **UI & Layout Refinement**: Visual design, responsive layout scaling across different screen sizes, animations, and component styling are still being polished.
+6. **Backend & Production API**: Real remote server integration and persistent database storage are not yet connected.
 
 ---
 
-## 15. Future Integrations
+## 16. Future Integrations
 
 - **Cloud Vision APIs**: Direct integration with Google Cloud Vision, AWS Textract, or OpenAI GPT-4o Vision for real-time multilingual card extraction.
 - **Enterprise CRM Connectors**: Direct two-way sync pipelines into Salesforce, HubSpot, Zoho CRM, and Pipedrive.
 - **Speech-to-Text Transcription**: Automatic audio-to-text transcription of voice memos using OpenAI Whisper or Google Cloud Speech-to-Text.
 - **Backend Infrastructure**: Production backend integration with Supabase, PostgreSQL, or GraphQL with real-time WebSocket event updates.
-
----
-
-## 16. Production Roadmap
-
-```mermaid
-gantt
-    title ExpoDiaries Roadmap
-    dateFormat  YYYY-MM-DD
-    section Foundation
-    Phase 0: Architecture & Tokens      :done, 2026-09-01, 2026-09-10
-    Phase 1: Auth & Shell & Dashboard   :done, 2026-09-11, 2026-09-20
-    section Floor Experience
-    Phase 2: Events & Floor Visualizer  :done, 2026-09-21, 2026-09-30
-    Phase 3: Leads, Camera & OCR Capture:done, 2026-10-01, 2026-10-06
-    section Enterprise Polish
-    Phase 4: Team, Analytics & CRM Sync :active, 2026-10-07, 2026-10-20
-    Phase 5: Production QA & EAS Builds : 2026-10-21, 2026-11-05
-```
 
 ---
 
