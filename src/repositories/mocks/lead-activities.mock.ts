@@ -1,0 +1,52 @@
+import { LeadActivity } from '@/types/lead-activity';
+
+export const mockLeadActivities: LeadActivity[] = [
+  {
+    id: 'act-1',
+    leadId: 'lead-101',
+    actorId: 'usr-alex-1',
+    actorName: 'Alex Mercer',
+    type: 'scanned',
+    description: 'Scanned attendee badge at LVCC Booth #N-408',
+    metadata: { scannerMode: 'badge_nfc', rssi: -45 },
+    timestamp: '2026-10-16T10:14:22.000Z',
+  },
+  {
+    id: 'act-2',
+    leadId: 'lead-101',
+    actorId: 'usr-alex-1',
+    actorName: 'Alex Mercer',
+    type: 'status_changed',
+    description: 'Updated lead status from New to Qualified',
+    metadata: { previousStatus: 'new', newStatus: 'qualified', score: 92 },
+    timestamp: '2026-10-16T10:20:00.000Z',
+  },
+  {
+    id: 'act-3',
+    leadId: 'lead-101',
+    actorId: 'usr-alex-1',
+    actorName: 'Alex Mercer',
+    type: 'assigned',
+    description: 'Assigned lead to David Chen (Enterprise AE)',
+    metadata: { assigneeId: 'usr-david-3' },
+    timestamp: '2026-10-16T10:25:00.000Z',
+  },
+  {
+    id: 'act-4',
+    leadId: 'lead-101',
+    actorId: 'usr-david-3',
+    actorName: 'David Chen',
+    type: 'meeting_scheduled',
+    description: 'Scheduled Zoom demo for Oct 21, 2026 at 2:00 PM PST',
+    timestamp: '2026-10-16T14:15:00.000Z',
+  },
+  {
+    id: 'act-5',
+    leadId: 'lead-102',
+    actorId: 'usr-elena-2',
+    actorName: 'Elena Rostova',
+    type: 'created',
+    description: 'Captured physical business card with OCR processing',
+    timestamp: '2026-10-16T11:42:05.000Z',
+  },
+];

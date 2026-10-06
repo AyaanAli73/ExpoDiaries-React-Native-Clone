@@ -1,21 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { useColorScheme as useRNColorScheme } from 'react-native';
 
+import { useAppStore } from '@/stores';
+
+const emptySubscribe = () => () => {};
+
 /**
- * To support static rendering, this value needs to be re-calculated on the client side for web
+ * Hydration-safe color scheme resolver for Web
+ * Uses useSyncExternalStore to eliminate cascading renders and ESLint warnings.
  */
-export function useColorScheme() {
-  const [hasHydrated, setHasHydrated] = useState(false);
+export function useColorScheme(): 'light' | 'dark' {
+  const hasHydrated = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
 
-  useEffect(() => {
-    setHasHydrated(true);
-  }, []);
+  const deviceScheme = useRNColorScheme();
+  const themePreference = useAppStore((state) => state.themePreference);
 
-  const colorScheme = useRNColorScheme();
-
-  if (hasHydrated) {
-    return colorScheme;
+  if (!hasHydrated) {
+    return 'light';
   }
 
-  return 'light';
+  if (themePreference === 'system') {
+    return deviceScheme === 'dark' ? 'dark' : 'light';
+  }
+
+  return themePreference;
 }

@@ -1,0 +1,43 @@
+import { FollowUp } from '@/types/follow-up';
+
+export const mockFollowUps: FollowUp[] = [
+  {
+    id: 'fup-1',
+    leadId: 'lead-101',
+    leadName: 'Marcus Vance',
+    eventId: 'evt-2026-ces',
+    assignedToId: 'usr-david-3',
+    type: 'meeting',
+    dueDate: '2026-10-21T14:00:00.000Z',
+    status: 'pending',
+    priority: 'high',
+    notes: 'Live Zoom demo: multi-region edge ingestion with custom encryption keys.',
+    createdAt: '2026-10-16T14:15:00.000Z',
+  },
+  {
+    id: 'fup-2',
+    leadId: 'lead-102',
+    leadName: 'Samantha Reed',
+    eventId: 'evt-2026-ces',
+    assignedToId: 'usr-sarah-4',
+    type: 'email',
+    dueDate: '2026-10-18T10:00:00.000Z',
+    status: 'pending',
+    priority: 'high',
+    notes: 'Send SOC2 compliance package and barcode webhook documentation.',
+    createdAt: '2026-10-16T11:45:00.000Z',
+  },
+  {
+    id: 'fup-3',
+    leadId: 'lead-104',
+    leadName: 'Chloe Dubois',
+    eventId: 'evt-2026-ces',
+    assignedToId: 'usr-elena-2',
+    type: 'call',
+    dueDate: '2026-10-20T09:00:00.000Z',
+    status: 'pending',
+    priority: 'medium',
+    notes: 'Follow up on European channel distribution agreement draft.',
+    createdAt: '2026-10-16T16:10:00.000Z',
+  },
+];
