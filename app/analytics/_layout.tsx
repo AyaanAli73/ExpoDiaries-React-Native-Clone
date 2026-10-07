@@ -8,6 +8,7 @@ export default function AnalyticsLayout() {
         animation: 'slide_from_right',
       }}>
       <Stack.Screen name="reports" />
+      <Stack.Screen name="roi" />
     </Stack>
   );
 }

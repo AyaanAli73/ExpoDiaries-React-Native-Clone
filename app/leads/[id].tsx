@@ -178,12 +178,13 @@ export default function LeadDetailScreen() {
     }
   };
 
-  const handleAssignMember = async (member: TeamMember) => {
+  const handleAssignMember = async (member: TeamMember, note?: string) => {
     try {
       await assignLeadMutation.mutateAsync({
         id: lead.id,
         assigneeId: member.userId,
         assigneeName: member.name,
+        note,
       });
       setToastMessage(`Assigned lead to ${member.name}`);
     } catch {

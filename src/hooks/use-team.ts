@@ -59,3 +59,17 @@ export function useUpdateMemberStatus() {
     },
   });
 }
+
+export function useUpdateMemberPresence() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, presence }: { id: string; presence: import('@/types/team').TeamMemberPresence }) =>
+      teamService.updateMemberPresence(id, presence),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.team.detail(variables.id) });
+      queryClient.invalidateQueries({ queryKey: queryKeys.team.all });
+    },
+  });
+}
+

@@ -23,6 +23,7 @@ export const LeadSchema = z.object({
   eventId: z.string(),
   eventName: z.string().optional(),
   boothNumber: z.string().optional(),
+  booth: z.string().optional(),
   hall: z.string().optional(),
   avatarUrl: z.string().optional(),
   companyId: z.string().default('comp-acme-1'),

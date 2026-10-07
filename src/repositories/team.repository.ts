@@ -1,7 +1,13 @@
 import { apiClient } from '@/lib/api-client';
 import { mockTeamMembers } from '@/repositories/mocks/team.mock';
 import { UserRole } from '@/types/auth';
-import { InviteTeamMemberInput, TeamMember, TeamMemberStatus } from '@/types/team';
+import {
+  InviteTeamMemberInput,
+  ROLE_DEFAULT_PERMISSIONS,
+  TeamMember,
+  TeamMemberPresence,
+  TeamMemberStatus,
+} from '@/types/team';
 
 export interface ITeamRepository {
   getTeamMembers(companyId?: string): Promise<TeamMember[]>;
@@ -9,6 +15,7 @@ export interface ITeamRepository {
   inviteTeamMember(input: InviteTeamMemberInput, companyId?: string): Promise<TeamMember>;
   updateTeamMemberRole(id: string, role: UserRole): Promise<TeamMember>;
   updateTeamMemberStatus(id: string, status: TeamMemberStatus): Promise<TeamMember>;
+  updateTeamMemberPresence(id: string, presence: TeamMemberPresence): Promise<TeamMember>;
 }
 
 class TeamRepository implements ITeamRepository {
@@ -44,7 +51,16 @@ class TeamRepository implements ITeamRepository {
         title: input.title,
         activeEventsCount: 0,
         leadsCapturedCount: 0,
+        hotLeadsCount: 0,
+        meetingsCount: 0,
         status: 'invited',
+        presence: 'offline',
+        canScan: true,
+        canAssign: false,
+        canExport: false,
+        permissions: ROLE_DEFAULT_PERMISSIONS[input.role] || [],
+        recentActivities: [],
+        eventActivities: [],
         joinedAt: new Date().toISOString(),
       };
       this.members.push(newMember);
@@ -81,6 +97,20 @@ class TeamRepository implements ITeamRepository {
     return apiClient.request<TeamMember>(`/team/${id}/status`, {
       method: 'PATCH',
       body: JSON.stringify({ status }),
+    });
+  }
+
+  async updateTeamMemberPresence(id: string, presence: TeamMemberPresence): Promise<TeamMember> {
+    if (apiClient.isMock) {
+      await apiClient.simulateLatency(150);
+      const index = this.members.findIndex((m) => m.id === id);
+      if (index === -1) throw new Error('Team member not found');
+      this.members[index] = { ...this.members[index], presence };
+      return this.members[index];
+    }
+    return apiClient.request<TeamMember>(`/team/${id}/presence`, {
+      method: 'PATCH',
+      body: JSON.stringify({ presence }),
     });
   }
 }

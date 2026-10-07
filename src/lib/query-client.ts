@@ -61,6 +61,14 @@ export const queryKeys = {
       [...queryKeys.analytics.all, 'metrics', { companyId, eventId }] as const,
     summary: (eventId: string) => [...queryKeys.analytics.all, 'summary', eventId] as const,
     staff: (eventId: string) => [...queryKeys.analytics.all, 'staff', eventId] as const,
+    roiReport: (eventId: string, dealSizeOverride?: number) =>
+      [...queryKeys.analytics.all, 'roi-report', eventId, { dealSizeOverride }] as const,
+    economics: (eventId: string) => [...queryKeys.analytics.all, 'economics', eventId] as const,
+    insights: (eventId: string) => [...queryKeys.analytics.all, 'insights', eventId] as const,
+    dashboard: (filter: string, eventId?: string) =>
+      [...queryKeys.analytics.all, 'dashboard', { filter, eventId }] as const,
+    roiAnalysis: (eventId: string, costOverrides?: unknown, revenueOverrides?: unknown) =>
+      [...queryKeys.analytics.all, 'roi-analysis', eventId, { costOverrides, revenueOverrides }] as const,
   },
   team: {
     all: ['team'] as const,

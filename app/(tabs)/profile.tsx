@@ -1,13 +1,19 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import {
+  Alert,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { router } from 'expo-router';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import { ResponsiveGrid } from '@/components/layout/responsive-grid';
 import { ScreenContainer } from '@/components/layout/screen-container';
+import { DigitalBusinessCard } from '@/components/profile/digital-business-card';
+import { QrProfileModal } from '@/components/profile/qr-profile-modal';
 import {
   AppText,
-  Avatar,
   Badge,
   Button,
   Card,
@@ -18,239 +24,312 @@ import {
   Icon,
 } from '@/components/ui';
 import { useColorScheme } from '@/hooks/use-color-scheme';
-import { useResponsive } from '@/hooks/use-responsive';
-import { useAppStore } from '@/stores/use-app-store';
 import { useAuthStore } from '@/stores/use-auth-store';
-import { Colors, Spacing } from '@/theme';
+import { Colors, Radius, Spacing } from '@/theme';
+
+interface NavigationItem {
+  key: string;
+  label: string;
+  subtitle: string;
+  icon: any;
+  route: string;
+  badge?: string;
+  badgeVariant?: 'primary' | 'success' | 'outline';
+}
+
+const PERSONAL_MODULES: NavigationItem[] = [
+  {
+    key: 'me',
+    label: 'My Profile',
+    subtitle: 'Personal info, bio, and event badges',
+    icon: 'User',
+    route: '/profile/me',
+  },
+  {
+    key: 'company',
+    label: 'Company',
+    subtitle: 'Acme Corporation • Booth #4209',
+    icon: 'Building',
+    route: '/profile/company',
+    badge: 'EXHIBITOR',
+    badgeVariant: 'outline',
+  },
+  {
+    key: 'card',
+    label: 'Digital Business Card',
+    subtitle: 'NFC attendee pass, theme styles & socials',
+    icon: 'CreditCard',
+    route: '/profile/card',
+    badge: 'NFC',
+    badgeVariant: 'primary',
+  },
+  {
+    key: 'qr',
+    label: 'QR Profile',
+    subtitle: 'Real QR code linking to public profile URL',
+    icon: 'QrCode',
+    route: '/profile/qr',
+    badge: 'LIVE',
+    badgeVariant: 'success',
+  },
+];
+
+const PREFERENCE_MODULES: NavigationItem[] = [
+  {
+    key: 'notifications',
+    label: 'Notifications',
+    subtitle: 'Hot lead alerts, team pings & quiet hours',
+    icon: 'Bell',
+    route: '/profile/notifications',
+  },
+  {
+    key: 'privacy',
+    label: 'Privacy',
+    subtitle: 'Visibility, biometrics & token security',
+    icon: 'Shield',
+    route: '/profile/privacy',
+  },
+  {
+    key: 'appearance',
+    label: 'Appearance',
+    subtitle: 'Dark/Light mode, theme & density',
+    icon: 'Palette',
+    route: '/profile/appearance',
+  },
+  {
+    key: 'data',
+    label: 'Data',
+    subtitle: 'Offline cache, storage breakdown & backup',
+    icon: 'HardDrive',
+    route: '/profile/data',
+  },
+  {
+    key: 'account',
+    label: 'Account',
+    subtitle: 'Login sessions, password & 2FA security',
+    icon: 'Lock',
+    route: '/profile/account',
+  },
+];
+
+const TEAM_MODULES: NavigationItem[] = [
+  {
+    key: 'team',
+    label: 'Team Roster & Booth Staff',
+    subtitle: '18 active credentials • Lead assignment',
+    icon: 'Users',
+    route: '/profile/team',
+  },
+  {
+    key: 'crm',
+    label: 'CRM Connections & Sync',
+    subtitle: 'Salesforce, HubSpot, Dynamics, Custom API',
+    icon: 'Share2',
+    route: '/profile/crm',
+    badge: '4 CRMs',
+    badgeVariant: 'primary',
+  },
+];
 
 export default function ProfileScreen() {
   const scheme = useColorScheme();
   const theme = Colors[scheme];
-  const { isTablet, isDesktop } = useResponsive();
   const { user, logout } = useAuthStore();
-  const { density, setDensity, activeWorkspace } = useAppStore();
+  const [qrModalVisible, setQrModalVisible] = useState(false);
 
+  // Destructive Action: Sign Out Confirmation
   const handleLogout = () => {
-    logout();
-    router.replace('/(auth)/welcome');
+    Alert.alert(
+      'Sign Out of Session',
+      'Are you sure you want to sign out? Your offline captured leads are synced with local storage.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: () => {
+            logout();
+            router.replace('/(auth)/welcome');
+          },
+        },
+      ]
+    );
   };
+
+  const renderModuleGroup = (title: string, items: NavigationItem[]) => (
+    <Card density="comfortable" style={styles.groupCard}>
+      <CardHeader>
+        <CardTitle level={3}>{title}</CardTitle>
+      </CardHeader>
+      <CardContent style={styles.groupContent}>
+        {items.map((item, index) => (
+          <React.Fragment key={item.key}>
+            {index > 0 && <Divider />}
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={`Navigate to ${item.label}`}
+              onPress={() => router.push(item.route as any)}
+              style={styles.moduleRow}>
+              <View
+                style={[
+                  styles.iconContainer,
+                  { backgroundColor: theme.surfaceSubtle },
+                ]}>
+                <Icon name={item.icon} size={18} color={theme.primary} />
+              </View>
+              <View style={styles.moduleTextCol}>
+                <AppText variant="body" weight="semibold">
+                  {item.label}
+                </AppText>
+                <AppText variant="caption" color="secondary" numberOfLines={1}>
+                  {item.subtitle}
+                </AppText>
+              </View>
+              {item.badge && (
+                <Badge
+                  label={item.badge}
+                  variant={item.badgeVariant || 'outline'}
+                  size="sm"
+                />
+              )}
+              <Icon name="ChevronRight" size={16} color={theme.textMuted} />
+            </Pressable>
+          </React.Fragment>
+        ))}
+      </CardContent>
+    </Card>
+  );
 
   return (
     <ScreenContainer safeAreaEdges={['left', 'right']}>
-      {/* 1. User Info Profile Header */}
-      <Animated.View
-        entering={FadeInDown.duration(280).springify().damping(18)}
-        style={styles.section}>
-        <Card density="comfortable">
-          <CardHeader>
-            <View style={styles.userHeader}>
-              <View style={styles.userAvatarRow}>
-                <Avatar
-                  name={user?.name || 'Alex Mercer'}
-                  source={user?.avatarUrl ? { uri: user.avatarUrl } : undefined}
-                  size="lg"
-                />
-                <View style={styles.userInfoCol}>
-                  <CardTitle level={2}>{user?.name || 'Alex Mercer'}</CardTitle>
-                  <AppText variant="caption" color="secondary">
-                    {user?.title || 'Solutions Architect'} • {user?.email || 'alex@acme.io'}
-                  </AppText>
-                  <AppText variant="caption" color="muted">
-                    {user?.phone || '+1 (555) 234-8901'}
-                  </AppText>
-                </View>
-              </View>
-              <Badge label={user?.role?.toUpperCase() || 'ADMIN'} variant="primary" size="sm" />
-            </View>
-          </CardHeader>
-
-          <Divider style={{ marginHorizontal: Spacing.md }} />
-
-          <CardContent style={styles.orgDetails}>
-            <View style={styles.infoRow}>
-              <View style={styles.infoLabelRow}>
-                <Icon name="Briefcase" size={14} color={theme.textMuted} />
-                <AppText variant="caption" color="secondary">
-                  Organization
-                </AppText>
-              </View>
-              <AppText variant="body" weight="semibold">
-                {activeWorkspace.name}
-              </AppText>
-            </View>
-
-            <View style={styles.infoRow}>
-              <View style={styles.infoLabelRow}>
-                <Icon name="Sparkles" size={14} color={theme.textMuted} />
-                <AppText variant="caption" color="secondary">
-                  Subscription Tier
-                </AppText>
-              </View>
-              <Badge label={activeWorkspace.plan.toUpperCase()} variant="outline" size="sm" />
-            </View>
-
-            <View style={styles.infoRow}>
-              <View style={styles.infoLabelRow}>
-                <Icon name="Users" size={14} color={theme.textMuted} />
-                <AppText variant="caption" color="secondary">
-                  Seats Assigned
-                </AppText>
-              </View>
-              <AppText variant="caption" weight="medium" tabular color="secondary">
-                18 active staff credentials
-              </AppText>
-            </View>
-          </CardContent>
-        </Card>
-      </Animated.View>
-
-      <ResponsiveGrid gap={12} columns={isTablet || isDesktop ? 2 : 1}>
-        {/* 2. Preferences Card */}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}>
+        {/* 1. Interactive Digital Business Card */}
         <Animated.View
-          entering={FadeInDown.duration(300).delay(60).springify().damping(18)}
-          style={styles.gridSection}>
-          <Card density="comfortable">
-            <CardHeader>
-              <View style={styles.cardHeaderWithIcon}>
-                <Icon name="Sliders" size={16} color={theme.primary} />
-                <CardTitle level={3}>Field Preferences</CardTitle>
-              </View>
-            </CardHeader>
-            <CardContent style={styles.prefGrid}>
-              <View style={styles.prefRow}>
-                <View style={styles.prefTextCol}>
-                  <AppText weight="semibold" variant="body">
-                    Information Density
-                  </AppText>
-                  <AppText variant="caption" color="secondary">
-                    Currently set to {density === 'compact' ? 'Compact' : 'Comfortable'} mode
-                  </AppText>
-                </View>
-                <Button
-                  label={density === 'compact' ? 'Comfortable' : 'Compact'}
-                  variant="outline"
-                  size="sm"
-                  onPress={() => setDensity(density === 'compact' ? 'comfortable' : 'compact')}
-                />
-              </View>
-            </CardContent>
-          </Card>
+          entering={FadeInDown.duration(280).springify().damping(18)}
+          style={styles.cardSection}>
+          <DigitalBusinessCard
+            user={user}
+            eventName="CES 2026 Las Vegas"
+            boothLocation="Booth #4209"
+            onOpenQrModal={() => setQrModalVisible(true)}
+          />
         </Animated.View>
 
-        {/* 3. Management Navigation Links */}
+        {/* 2. Quick Action Buttons */}
         <Animated.View
-          entering={FadeInDown.duration(300).delay(100).springify().damping(18)}
-          style={styles.gridSection}>
-          <Card density="comfortable">
-            <CardHeader>
-              <View style={styles.cardHeaderWithIcon}>
-                <Icon name="Settings" size={16} color={theme.primary} />
-                <CardTitle level={3}>Management Shortcuts</CardTitle>
-              </View>
-            </CardHeader>
-            <CardContent style={styles.navGrid}>
-              <Button
-                label="Edit Profile Details"
-                variant="outline"
-                size="sm"
-                leftIcon="User"
-                onPress={() => router.push('/profile/edit')}
-              />
-              <Button
-                label="Team Roster & Booth Staff"
-                variant="outline"
-                size="sm"
-                leftIcon="Users"
-                onPress={() => router.push('/profile/team')}
-              />
-              <Button
-                label="Offline Sync & Security"
-                variant="outline"
-                size="sm"
-                leftIcon="Shield"
-                onPress={() => router.push('/profile/security')}
-              />
-            </CardContent>
-          </Card>
+          entering={FadeInDown.duration(260).delay(40)}
+          style={styles.quickBar}>
+          <Button
+            label="View Card"
+            variant="outline"
+            size="sm"
+            leftIcon="CreditCard"
+            onPress={() => router.push('/profile/card' as any)}
+            aria-label="Open digital business card screen"
+            style={{ flex: 1 }}
+          />
+          <Button
+            label="QR Pass"
+            variant="outline"
+            size="sm"
+            leftIcon="QrCode"
+            onPress={() => router.push('/profile/qr' as any)}
+            aria-label="Open QR profile screen"
+            style={{ flex: 1 }}
+          />
+          <Button
+            label="Edit Info"
+            variant="primary"
+            size="sm"
+            leftIcon="Edit3"
+            onPress={() => router.push('/profile/edit' as any)}
+            aria-label="Edit attendee profile details"
+            style={{ flex: 1 }}
+          />
         </Animated.View>
-      </ResponsiveGrid>
 
-      {/* 4. Sign Out */}
-      <Animated.View
-        entering={FadeInDown.duration(300).delay(140).springify().damping(18)}
-        style={styles.logoutSection}>
-        <Button
-          label="Sign Out of Session"
-          variant="danger"
-          size="md"
-          leftIcon="LogOut"
-          onPress={handleLogout}
-        />
-      </Animated.View>
+        {/* 3. Personal & Identity Modules (My Profile, Company, Digital Card, QR Profile) */}
+        <Animated.View entering={FadeInDown.duration(260).delay(80)}>
+          {renderModuleGroup('Attendee & Identity', PERSONAL_MODULES)}
+        </Animated.View>
+
+        {/* 4. Preferences & Privacy Modules (Notifications, Privacy, Appearance, Data, Account) */}
+        <Animated.View entering={FadeInDown.duration(260).delay(120)}>
+          {renderModuleGroup('Preferences & Controls', PREFERENCE_MODULES)}
+        </Animated.View>
+
+        {/* 5. Team & CRM Integrations */}
+        <Animated.View entering={FadeInDown.duration(260).delay(160)}>
+          {renderModuleGroup('Team & Integrations', TEAM_MODULES)}
+        </Animated.View>
+
+        {/* 6. Sign Out Button (Destructive Confirmation) */}
+        <Animated.View
+          entering={FadeInDown.duration(260).delay(200)}
+          style={styles.logoutSection}>
+          <Button
+            label="Sign Out of Session"
+            variant="danger"
+            size="md"
+            leftIcon="LogOut"
+            onPress={handleLogout}
+            aria-label="Sign out of account session"
+          />
+        </Animated.View>
+      </ScrollView>
+
+      {/* QR Profile Modal */}
+      <QrProfileModal
+        visible={qrModalVisible}
+        onClose={() => setQrModalVisible(false)}
+        user={user}
+        eventName="CES 2026 Las Vegas"
+        boothLocation="Booth #4209"
+      />
     </ScreenContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  section: {
-    marginVertical: Spacing.sm,
-  },
-  gridSection: {
-    marginBottom: Spacing.sm,
-  },
-  userHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
+  scrollContent: {
     gap: Spacing.sm,
+    paddingBottom: Spacing.xl,
   },
-  userAvatarRow: {
-    flex: 1,
+  cardSection: {
+    marginVertical: Spacing.xs,
+  },
+  quickBar: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.md,
+    gap: Spacing.xs,
+    marginBottom: Spacing.xs,
   },
-  userInfoCol: {
-    flex: 1,
-    gap: 2,
+  groupCard: {
+    marginBottom: Spacing.xs,
   },
-  orgDetails: {
-    gap: Spacing.sm,
-    paddingTop: Spacing.md,
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  infoLabelRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  groupContent: {
     gap: Spacing.xs,
   },
-  cardHeaderWithIcon: {
+  moduleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.xs,
-  },
-  prefGrid: {
     gap: Spacing.sm,
+    paddingVertical: 6,
   },
-  prefRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  iconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: Radius.medium,
     alignItems: 'center',
-    gap: Spacing.sm,
+    justifyContent: 'center',
   },
-  prefTextCol: {
+  moduleTextCol: {
     flex: 1,
     gap: 2,
-  },
-  navGrid: {
-    gap: Spacing.xs + 2,
   },
   logoutSection: {
-    marginTop: Spacing.md,
+    marginTop: Spacing.sm,
     marginBottom: Spacing.xl,
   },
 });

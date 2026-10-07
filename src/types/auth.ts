@@ -14,6 +14,15 @@ export const AuthUserSchema = z.object({
   phone: z.string().optional(),
   company: z.string().optional(),
   website: z.string().optional(),
+  bio: z.string().optional(),
+  socialLinks: z
+    .object({
+      linkedin: z.string().optional(),
+      twitter: z.string().optional(),
+      github: z.string().optional(),
+    })
+    .optional(),
+  publicProfileSlug: z.string().optional(),
   onboardingCompleted: z.boolean().optional(),
 });
 export type AuthUser = z.infer<typeof AuthUserSchema>;

@@ -33,6 +33,7 @@ export const Colors = {
     successSubtle: '#ECFDF5',
     warningSubtle: '#FFFBEB',
     dangerSubtle: '#FEF2F2',
+    surfaceSubtle: ColorTokens.light.secondary,
   },
   dark: {
     // Primary requested tokens
@@ -66,6 +67,7 @@ export const Colors = {
     successSubtle: '#064E3B33',
     warningSubtle: '#78350F33',
     dangerSubtle: '#7F1D1D33',
+    surfaceSubtle: '#131B2B',
   },
 } as const;
 

@@ -36,23 +36,93 @@ export class LeadsService {
   }
 
   async exportLeadsCsv(eventId?: string): Promise<string> {
-    const result = await this.getLeads({ eventId }, { page: 1, pageSize: 500 });
-    const headers = ['ID', 'First Name', 'Last Name', 'Email', 'Phone', 'Company', 'Title', 'Status', 'Score', 'Priority', 'Captured At'];
-    const rows = result.items.map((lead) => [
-      lead.id,
-      lead.firstName,
-      lead.lastName,
-      lead.email || '',
-      lead.phone || '',
-      lead.company || '',
-      lead.title || '',
-      lead.status,
-      lead.score.toString(),
-      lead.priority,
-      lead.createdAt,
-    ]);
+    return this.exportLeadsData({ eventId, format: 'csv', scope: 'all' });
+  }
 
-    return [headers.join(','), ...rows.map((r) => r.map((c) => `"${c.replace(/"/g, '""')}"`).join(','))].join('\n');
+  async exportLeadsData(options: {
+    eventId?: string;
+    scope?: 'all' | 'hot' | 'qualified';
+    format?: 'csv' | 'json' | 'tsv';
+    selectedFields?: string[];
+  }): Promise<string> {
+    const { eventId, scope = 'all', format = 'csv', selectedFields } = options;
+    const result = await this.getLeads({ eventId }, { page: 1, pageSize: 500 });
+    let items = result.items;
+
+    if (scope === 'hot') {
+      items = items.filter((l) => l.temperature === 'hot' || l.priority === 'urgent');
+    } else if (scope === 'qualified') {
+      items = items.filter(
+        (l) => l.status === 'qualified' || l.temperature === 'hot' || l.temperature === 'warm'
+      );
+    }
+
+    if (format === 'json') {
+      const sanitized = items.map((l) => {
+        if (!selectedFields || selectedFields.length === 0) return l;
+        const res: Record<string, unknown> = { id: l.id };
+        if (selectedFields.includes('name')) {
+          res.firstName = l.firstName;
+          res.lastName = l.lastName;
+        }
+        if (selectedFields.includes('contact')) {
+          res.email = l.email;
+          res.phone = l.phone;
+        }
+        if (selectedFields.includes('company')) {
+          res.company = l.company;
+          res.title = l.title;
+        }
+        if (selectedFields.includes('qualification')) {
+          res.temperature = l.temperature;
+          res.priority = l.priority;
+          res.score = l.score;
+          res.status = l.status;
+        }
+        if (selectedFields.includes('attribution')) {
+          res.booth = l.booth;
+          res.assignedToName = l.assignedToName;
+          res.createdAt = l.createdAt;
+        }
+        return res;
+      });
+      return JSON.stringify(sanitized, null, 2);
+    }
+
+    // Delimited formats (CSV or TSV)
+    const delimiter = format === 'tsv' ? '\t' : ',';
+    const allHeaders = [
+      { key: 'name', label: 'First Name', val: (l: typeof items[0]) => l.firstName },
+      { key: 'name', label: 'Last Name', val: (l: typeof items[0]) => l.lastName },
+      { key: 'contact', label: 'Email', val: (l: typeof items[0]) => l.email || '' },
+      { key: 'contact', label: 'Phone', val: (l: typeof items[0]) => l.phone || '' },
+      { key: 'company', label: 'Company', val: (l: typeof items[0]) => l.company || '' },
+      { key: 'company', label: 'Title', val: (l: typeof items[0]) => l.title || '' },
+      { key: 'qualification', label: 'Temperature', val: (l: typeof items[0]) => (l.temperature || 'warm').toUpperCase() },
+      { key: 'qualification', label: 'Priority', val: (l: typeof items[0]) => l.priority.toUpperCase() },
+      { key: 'qualification', label: 'Score', val: (l: typeof items[0]) => l.score.toString() },
+      { key: 'qualification', label: 'Status', val: (l: typeof items[0]) => l.status.toUpperCase() },
+      { key: 'attribution', label: 'Booth Station', val: (l: typeof items[0]) => l.booth || 'Main Booth' },
+      { key: 'attribution', label: 'Assigned AE', val: (l: typeof items[0]) => l.assignedToName || 'Unassigned' },
+      { key: 'attribution', label: 'Captured At', val: (l: typeof items[0]) => l.createdAt },
+    ];
+
+    const activeCols =
+      selectedFields && selectedFields.length > 0
+        ? allHeaders.filter((h) => selectedFields.includes(h.key))
+        : allHeaders;
+
+    const headerRow = activeCols.map((c) => c.label).join(delimiter);
+    const rows = items.map((l) =>
+      activeCols
+        .map((c) => {
+          const str = String(c.val(l));
+          return format === 'tsv' ? str : `"${str.replace(/"/g, '""')}"`;
+        })
+        .join(delimiter)
+    );
+
+    return [headerRow, ...rows].join('\n');
   }
 
   async createLead(input: CreateLeadInput): Promise<Lead> {
@@ -82,12 +152,30 @@ export class LeadsService {
     return this.repo.updateLead(id, updates);
   }
 
-  async assignLead(id: string, assigneeId: string, assigneeName: string): Promise<Lead> {
-    return this.repo.updateLead(id, {
+  async assignLead(
+    id: string,
+    assigneeId: string,
+    assigneeName: string,
+    note?: string
+  ): Promise<Lead> {
+    const updated = await this.repo.updateLead(id, {
       assignedToId: assigneeId,
       assignedToName: assigneeName,
       assignedAt: new Date().toISOString(),
     });
+
+    await this.repo.addLeadActivity({
+      leadId: id,
+      actorId: 'usr-current',
+      actorName: 'Alex Mercer',
+      type: 'assigned',
+      description: note
+        ? `Lead assigned to ${assigneeName}: "${note}"`
+        : `Lead assigned to representative ${assigneeName}`,
+      metadata: { assigneeId, assigneeName, note },
+    });
+
+    return updated;
   }
 
   async updateLeadTemperature(id: string, temperature: 'hot' | 'warm' | 'cold'): Promise<Lead> {

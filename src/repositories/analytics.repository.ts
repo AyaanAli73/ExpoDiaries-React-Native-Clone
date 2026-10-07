@@ -1,16 +1,25 @@
 import { apiClient } from '@/lib/api-client';
 import {
   mockAnalyticsMetrics,
+  mockEventEconomics,
   mockEventSummary,
   mockStaffPerformance,
+  mockVelocityDistribution,
 } from '@/repositories/mocks/analytics.mock';
-import { AnalyticsMetric, EventAnalyticsSummary, StaffPerformance } from '@/types/analytics';
+import {
+  AnalyticsMetric,
+  EventAnalyticsSummary,
+  EventEconomics,
+  StaffPerformance,
+} from '@/types/analytics';
 import { Lead } from '@/types/lead';
 
 export interface IAnalyticsRepository {
   getMetrics(companyId?: string, eventId?: string): Promise<AnalyticsMetric[]>;
   getEventSummary(eventId: string): Promise<EventAnalyticsSummary>;
   getStaffPerformance(eventId: string): Promise<StaffPerformance[]>;
+  getEventEconomics(eventId: string): Promise<EventEconomics>;
+  getVelocityDistribution(eventId: string): Promise<{ hour24: number; count: number }[]>;
   recordLeadCaptured(lead: Lead): Promise<void>;
 }
 
@@ -46,6 +55,25 @@ class AnalyticsRepository implements IAnalyticsRepository {
     }
     return apiClient.request<StaffPerformance[]>(`/analytics/events/${eventId}/staff`);
   }
+
+  async getEventEconomics(eventId: string): Promise<EventEconomics> {
+    if (apiClient.isMock) {
+      await apiClient.simulateLatency(150);
+      return mockEventEconomics[eventId] || { ...mockEventEconomics.default, eventId };
+    }
+    return apiClient.request<EventEconomics>(`/analytics/events/${eventId}/economics`);
+  }
+
+  async getVelocityDistribution(eventId: string): Promise<{ hour24: number; count: number }[]> {
+    if (apiClient.isMock) {
+      await apiClient.simulateLatency(150);
+      return [...mockVelocityDistribution];
+    }
+    return apiClient.request<{ hour24: number; count: number }[]>(
+      `/analytics/events/${eventId}/velocity`
+    );
+  }
+
 
   async recordLeadCaptured(lead: Lead): Promise<void> {
     if (apiClient.isMock) {

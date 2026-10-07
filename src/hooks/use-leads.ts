@@ -119,11 +119,13 @@ export function useAssignLead() {
       id,
       assigneeId,
       assigneeName,
+      note,
     }: {
       id: string;
       assigneeId: string;
       assigneeName: string;
-    }) => leadsService.assignLead(id, assigneeId, assigneeName),
+      note?: string;
+    }) => leadsService.assignLead(id, assigneeId, assigneeName, note),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.leads.detail(variables.id) });
       queryClient.invalidateQueries({ queryKey: queryKeys.leads.lists() });

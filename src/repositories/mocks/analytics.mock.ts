@@ -1,4 +1,9 @@
-import { AnalyticsMetric, EventAnalyticsSummary, StaffPerformance } from '@/types/analytics';
+import {
+  AnalyticsMetric,
+  EventAnalyticsSummary,
+  EventEconomics,
+  StaffPerformance,
+} from '@/types/analytics';
 
 export const mockAnalyticsMetrics: AnalyticsMetric[] = [
   {
@@ -77,7 +82,70 @@ export const mockEventSummary: EventAnalyticsSummary = {
 };
 
 export const mockStaffPerformance: StaffPerformance[] = [
-  { staffId: 'usr-alex-1', staffName: 'Alex Mercer', leadsCaptured: 68, qualifiedCount: 38, averageScore: 84 },
-  { staffId: 'usr-elena-2', staffName: 'Elena Rostova', leadsCaptured: 54, qualifiedCount: 29, averageScore: 78 },
-  { staffId: 'usr-david-3', staffName: 'David Chen', leadsCaptured: 42, qualifiedCount: 19, averageScore: 72 },
+  {
+    staffId: 'usr-alex-1',
+    staffName: 'Alex Mercer',
+    leadsCaptured: 68,
+    qualifiedCount: 38,
+    averageScore: 84,
+    conversionRate: 55.9,
+    hourlyVelocity: 8.5,
+  },
+  {
+    staffId: 'usr-elena-2',
+    staffName: 'Elena Rostova',
+    leadsCaptured: 54,
+    qualifiedCount: 29,
+    averageScore: 78,
+    conversionRate: 53.7,
+    hourlyVelocity: 6.8,
+  },
+  {
+    staffId: 'usr-david-3',
+    staffName: 'David Chen',
+    leadsCaptured: 42,
+    qualifiedCount: 19,
+    averageScore: 72,
+    conversionRate: 45.2,
+    hourlyVelocity: 5.3,
+  },
 ];
+
+
+export const mockEventEconomics: Record<string, EventEconomics> = {
+  'evt-2026-ces': {
+    eventId: 'evt-2026-ces',
+    boothSpaceCost: 14000,
+    travelAndLodgingCost: 4500,
+    collateralAndSwagCost: 2000,
+    sponsorshipFee: 4500,
+    totalInvestment: 25000,
+    averageDealSize: 18500,
+    estimatedCloseRatePercent: 14,
+    currency: 'USD',
+  },
+  default: {
+    eventId: 'default',
+    boothSpaceCost: 10000,
+    travelAndLodgingCost: 3500,
+    collateralAndSwagCost: 1500,
+    sponsorshipFee: 3000,
+    totalInvestment: 18000,
+    averageDealSize: 15000,
+    estimatedCloseRatePercent: 12,
+    currency: 'USD',
+  },
+};
+
+export const mockVelocityDistribution = [
+  { hour24: 9, count: 12 },
+  { hour24: 10, count: 22 },
+  { hour24: 11, count: 28 },
+  { hour24: 12, count: 18 },
+  { hour24: 13, count: 14 },
+  { hour24: 14, count: 32 },
+  { hour24: 15, count: 26 },
+  { hour24: 16, count: 18 },
+  { hour24: 17, count: 10 },
+];
+
